@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Painel de Empréstimos · Heel Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f6fb;--card:#fff;--ink:#0f2747;--muted:#64748b;--line:#e2e8f0;--soft:#f8fafc;
+  --blue:#2563eb;--blue-l:#dbeafe;--green:#059669;--green-l:#d1fae5;--amber:#d97706;--amber-l:#fef3c7;--violet:#7c3aed;--violet-l:#ede9fe;--red:#dc2626;
+  --shadow:0 1px 2px rgba(15,39,71,.05),0 6px 20px rgba(15,39,71,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+.top{background:var(--ink);color:#fff;position:sticky;top:0;z-index:20}
+.top .in{max-width:1180px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#06b6d4);display:grid;place-items:center;font-weight:800;font-size:1.2rem}
+.brand b{display:block;line-height:1.1;font-size:1.05rem}.brand span{font-size:.78rem;color:#9fb3d1}
+.tabs{display:flex;gap:4px;background:rgba(255,255,255,.08);padding:4px;border-radius:12px}
+.tab{background:none;color:#c6d4ea;border:0;padding:8px 16px;border-radius:9px;font:inherit;font-weight:600;cursor:pointer;transition:.2s}
+.tab:hover{color:#fff}.tab.on{background:#fff;color:var(--ink)}
+.pbtn{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:10px;padding:9px 14px;font:inherit;font-weight:600;cursor:pointer}
+.pbtn:hover{background:rgba(255,255,255,.2)}
+main{max-width:1180px;margin:0 auto;padding:22px 16px 40px}
+h1{font-size:1.6rem;margin:0 0 2px;font-weight:800;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.card h2{margin:0 0 2px;font-size:1rem;font-weight:700}
+.card .cap{color:var(--muted);font-size:.85rem;margin:0 0 12px}
+.params{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;align-items:end}
+label{display:block;font-weight:600;font-size:.8rem;color:var(--muted);margin-bottom:5px}
+input{width:100%;font:inherit;font-weight:600;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;transition:.15s}
+input:hover{border-color:#cbd5e1}
+input:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.suf{position:relative}.suf input{padding-right:44px}.suf i{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-style:normal;color:var(--muted);font-weight:700;font-size:.82rem}
+.stepper{display:flex;gap:6px}.stepper input{text-align:center}
+button{font:inherit;cursor:pointer}
+.sb{width:42px;border:1px solid var(--line);background:#fff;border-radius:10px;font-size:1.2rem;font-weight:700;color:var(--blue)}
+.sb:hover{background:var(--blue-l)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 11px;font-size:.78rem;font-weight:600;color:var(--muted)}
+.chip:hover{border-color:var(--blue);color:var(--blue)}.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.hint{margin:14px 0 0;font-size:.85rem;padding:8px 12px;border-radius:10px;background:var(--green-l);color:#065f46;font-weight:500}
+.hint.bad{background:#fee2e2;color:#991b1b;font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:16px 0}
+.kpi{position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.kpi:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(15,39,71,.12)}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.kpi .ic{width:34px;height:34px;border-radius:9px;background:var(--cl);color:var(--c);display:grid;place-items:center;font-size:1.05rem;margin-bottom:8px}
+.kpi small{display:block;color:var(--muted);font-weight:600;font-size:.8rem}
+.kpi b{display:block;font-size:1.35rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi em{font-style:normal;font-size:.78rem;color:var(--muted)}
+.row{display:grid;gap:14px;margin-bottom:14px;grid-template-columns:2fr 1fr}
+@media (max-width:860px){.row{grid-template-columns:1fr}}
+svg{display:block;width:100%;height:auto}
+.read{margin-top:8px;font-size:.88rem;padding:8px 12px;border-radius:10px;background:var(--soft);border:1px solid var(--line);min-height:38px}
+.leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--muted);margin-top:8px}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.donut{position:relative;max-width:230px;margin:6px auto 0}
+.donut .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.donut .mid small{color:var(--muted);font-size:.75rem}.donut .mid b{font-size:1.05rem;font-weight:800}
+.cb{display:grid;grid-template-columns:110px 1fr 120px;gap:10px;align-items:center;padding:6px 0;font-size:.88rem}
+.cb .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cb .tr{height:14px;background:var(--soft);border-radius:8px;overflow:hidden;display:flex}
+.cb .tr div{height:100%;transition:width .5s ease}
+.cb .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.ins{display:grid;gap:10px}
+.ins div{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;background:var(--soft);border-radius:10px;font-size:.88rem}
+.ins span{color:var(--muted)}.ins b{text-align:right}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:760px;font-size:.9rem}
+th{background:var(--soft);color:var(--muted);font-size:.78rem;font-weight:700;text-align:left;padding:10px 12px;white-space:nowrap}
+td{padding:7px 12px;border-top:1px solid var(--line);white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+td input{padding:7px 9px;min-width:100px}
+td .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:middle}
+td .nin{display:inline-block;width:calc(100% - 20px)}
+tbody tr:hover{background:#f8fbff}
+tfoot td{font-weight:800;background:var(--soft)}
+.del{border:0;background:#fee2e2;color:var(--red);width:30px;height:30px;border-radius:8px;font-weight:700}
+.del:hover{background:#fecaca}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{border:0;background:var(--blue);color:#fff;font-weight:600;padding:10px 16px;border-radius:10px}
+.btn:hover{background:#1d4ed8}.btn.g{background:var(--green)}.btn.g:hover{background:#047857}
+.btn.l{background:var(--blue-l);color:var(--blue)}.btn.l:hover{background:#bfdbfe}
+.note{font-size:.8rem;color:var(--muted);margin-top:10px}
+.panel{display:none}.panel.on{display:block}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:0 16px 28px}
+
+.pill{font-size:.78rem;font-weight:600;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.12);color:#c6d4ea;white-space:nowrap}
+.pill.ok{background:#d1fae5;color:#065f46}.pill.wait{background:#fef3c7;color:#92400e}.pill.err{background:#fee2e2;color:#991b1b}
+.login{position:fixed;inset:0;z-index:50;background:rgba(15,39,71,.55);display:none;place-items:center;padding:16px}
+.login.on{display:grid}
+.lbox{background:#fff;border-radius:18px;padding:26px;width:100%;max-width:380px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.lbox h2{margin:0 0 4px;font-size:1.3rem}.lbox p{margin:0 0 16px;color:var(--muted);font-size:.9rem}
+.lbox label{margin-top:10px}
+.lbox .btn{width:100%;margin-top:14px}.lbox .btn.l{margin-top:8px}
+.lerr{color:var(--red);font-size:.85rem;margin-top:10px;min-height:1.2em}
+.local{background:var(--amber-l);color:#92400e;padding:8px 12px;border-radius:10px;font-size:.85rem;margin-bottom:14px;display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{.top .tabs,.pbtn,.acts,.sb,.chips,.del{display:none}.panel{display:block!important;margin-bottom:16px}.top{position:static}}
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <div class="brand"><div class="logo">H</div><div><b>Heel Services</b><span>Painel de empréstimos</span></div></div>
+  <div class="tabs" role="tablist">
+    <button class="tab on" data-tab="p1">Painel</button>
+    <button class="tab" data-tab="p2">Clientes</button>
+    <button class="tab" data-tab="p3">Mês a mês</button>
+  </div>
+  <span class="pill" id="status">A iniciar...</span><button class="pbtn" id="logout" style="display:none">Sair</button><button class="pbtn" onclick="print()">Imprimir</button>
+</div></div>
+
+<main>
+  <div class="local" id="localBanner">Modo local: os dados ficam só neste aparelho. Configure o Firebase (veja o LEIA-ME) para guardar online.</div>
+  <h1>Painel de empréstimos</h1>
+  <p class="sub">Ajuste os dados e acompanhe os resultados em tempo real.</p>
+
+  <div class="card">
+    <h2>Parâmetros</h2><p class="cap">Os valores são divididos igualmente entre os clientes. Você pode ajustar cada um na aba Clientes.</p>
+    <div class="params">
+      <div><label for="capital">Quantia investida</label><div class="suf"><input id="capital" type="number" min="0" step="any" value="50000" inputmode="decimal"><i>MT</i></div></div>
+      <div><label for="n">Número de pessoas</label><input id="n" type="number" min="1" max="50" value="3" inputmode="numeric"></div>
+      <div><label for="rate">Taxa padrão ao mês</label><div class="suf"><input id="rate" type="number" min="0" step="any" value="20" inputmode="decimal"><i>%</i></div></div>
+      <div><label for="months">Meses</label>
+        <div class="stepper"><button class="sb" id="mm" aria-label="Menos um mês">−</button><input id="months" type="number" min="1" max="60" value="3" inputmode="numeric"><button class="sb" id="mp" aria-label="Mais um mês">+</button></div>
+        <div class="chips" id="chips"></div></div>
+    </div>
+    <p class="hint" id="alloc"></p>
+  </div>
+
+  <div class="kpis">
+    <div class="card kpi" style="--c:var(--blue);--cl:var(--blue-l)"><div class="ic">🏦</div><small>Total emprestado</small><b id="kLent">0</b><em id="kLentS"></em></div>
+    <div class="card kpi" style="--c:var(--violet);--cl:var(--violet-l)"><div class="ic">📥</div><small>Receber por mês</small><b id="kMonth">0</b><em>soma de todos os clientes</em></div>
+    <div class="card kpi" style="--c:var(--amber);--cl:var(--amber-l)"><div class="ic">⭐</div><small>Seu lucro do mês</small><b id="kProfit">0</b><em>juros mensais</em></div>
+    <div class="card kpi" style="--c:var(--green);--cl:var(--green-l)"><div class="ic">💰</div><small>Total bruto a receber</small><b id="kGross">0</b><em id="kGrossS"></em></div>
+    <div class="card kpi" style="--c:var(--green);--cl:var(--green-l)"><div class="ic">📈</div><small>Lucro total</small><b id="kTot">0</b><em id="kRoi"></em></div>
+  </div>
+
+  <div class="panel on" id="p1">
+    <div class="row">
+      <div class="card"><h2>Evolução dos recebimentos</h2><p class="cap">Passe o rato (ou toque) no gráfico para ver cada mês.</p>
+        <svg id="line" viewBox="0 0 640 270" role="img" aria-label="Gráfico de recebimentos acumulados"></svg>
+        <div class="read" id="read"></div>
+        <div class="leg"><span><i style="background:#2563eb"></i>Total recebido (acumulado)</span><span><i style="background:#f59e0b"></i>Lucro em juros (acumulado)</span><span><i style="background:#94a3b8"></i>Total bruto</span></div>
+      </div>
+      <div class="card"><h2>De onde vem o total</h2><p class="cap">Valor emprestado e juros.</p>
+        <div class="donut"><svg viewBox="0 0 200 200"><g transform="rotate(-90 100 100)"><circle cx="100" cy="100" r="70" fill="none" stroke="#e2e8f0" stroke-width="26"/><circle id="d1" cx="100" cy="100" r="70" fill="none" stroke="#2563eb" stroke-width="26"/><circle id="d2" cx="100" cy="100" r="70" fill="none" stroke="#f59e0b" stroke-width="26"/></g></svg>
+          <div class="mid"><small>Total bruto</small><b id="dMid"></b></div></div>
+        <div class="leg" style="justify-content:center"><span><i style="background:#2563eb"></i>Emprestado <b id="l1"></b></span><span><i style="background:#f59e0b"></i>Juros <b id="l2"></b></span></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card"><h2>Pagamento mensal por cliente</h2><p class="cap">Parte do valor emprestado e parte de juros.</p>
+        <div id="cbars"></div>
+        <div class="leg"><span><i style="background:#2563eb"></i>Parcela do valor</span><span><i style="background:#f59e0b"></i>Juros</span></div></div>
+      <div class="card"><h2>Indicadores</h2><p class="cap">Resumo rápido.</p><div class="ins" id="ins"></div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="p2">
+    <div class="card"><h2>Clientes</h2><p class="cap">Edite o nome, o valor e a taxa de cada cliente.</p>
+      <div class="tw"><table>
+        <thead><tr><th>Cliente</th><th>Valor (MT)</th><th>Taxa (%/mês)</th><th class="n">Juros/mês</th><th class="n">Paga por mês</th><th class="n">Total a receber</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+        <tfoot><tr><td>Total</td><td id="fA"></td><td></td><td class="n" id="fI"></td><td class="n" id="fP"></td><td class="n" id="fT"></td><td></td></tr></tfoot>
+      </table></div>
+      <div class="acts"><button class="btn" id="add">+ Adicionar cliente</button><button class="btn l" id="reset">Dividir igualmente</button></div>
+      <p class="note">Juros simples: pagamento mensal = valor ÷ meses + valor × taxa.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="p3">
+    <div class="card"><h2>Cronograma mês a mês</h2><p class="cap">Quanto entra a cada mês e quanto falta receber.</p>
+      <div class="tw"><table>
+        <thead><tr><th>Mês</th><th class="n">Pagamento</th><th class="n">Valor recuperado</th><th class="n">Juros recebidos</th><th class="n">Total recebido</th><th class="n">Falta receber</th></tr></thead>
+        <tbody id="sched"></tbody></table></div>
+      <div class="acts"><button class="btn g" id="csv">Baixar tabela (CSV)</button></div>
+    </div>
+  </div>
+</main>
+
+<div class="login" id="login"><div class="lbox">
+  <h2>Heel Services</h2><p>Entre para ver e guardar os seus dados online.</p>
+  <label for="em">Email</label><input id="em" type="email" autocomplete="username">
+  <label for="pw">Senha</label><input id="pw" type="password" autocomplete="current-password" placeholder="mínimo 6 caracteres">
+  <div class="lerr" id="lerr"></div>
+  <button class="btn" id="bin">Entrar</button>
+  <button class="btn l" id="bnew">Criar conta</button>
+</div></div>
+<footer>© Heel Services</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = v => new Intl.NumberFormat('pt-MZ',{minimumFractionDigits:2,maximumFractionDigits:2}).format(v||0)+' MT';
+const cmp = v => v>=1e6 ? (v/1e6).toFixed(1).replace('.',',')+' M' : v>=1e3 ? Math.round(v/1e3)+' mil' : Math.round(v)+'';
+const esc = s => s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const pal = ['#2563eb','#059669','#d97706','#7c3aed','#0891b2','#db2777'];
+const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+let clients = [], M = {};
+
+function count(el, target, f=fmt){
+  const from = el._v||0; el._v = target;
+  if (reduce || from===target){ el.textContent=f(target); return; }
+  const t0=performance.now(), d=450;
+  (function tick(t){
+    if (el._v!==target) return;
+    const p=Math.min(1,(t-t0)/d), e=1-Math.pow(1-p,3);
+    el.textContent=f(from+(target-from)*e);
+    if(p<1) requestAnimationFrame(tick);
+  })(t0);
+}
+
+function build(){
+  const n=Math.max(1,Math.min(50,parseInt($('n').value)||1));
+  const cap=parseFloat($('capital').value)||0, rate=parseFloat($('rate').value)||0, old=clients;
+  clients=Array.from({length:n},(_,i)=>({name:old[i]?.name||'Cliente '+(i+1),amount:+(cap/n).toFixed(2),rate:old[i]?.rate??rate}));
+  render();
+}
+function render(){
+  $('rows').innerHTML=clients.map((c,i)=>`<tr>
+    <td><span class="dot" style="background:${pal[i%pal.length]}"></span><input class="nin" data-i="${i}" data-f="name" value="${esc(c.name)}" aria-label="Nome do cliente ${i+1}"></td>
+    <td><input data-i="${i}" data-f="amount" type="number" min="0" step="any" value="${c.amount}"></td>
+    <td><input data-i="${i}" data-f="rate" type="number" min="0" step="any" value="${c.rate}"></td>
+    <td class="n" id="ri${i}"></td><td class="n" id="rp${i}"></td><td class="n" id="rt${i}"></td>
+    <td><button class="del" data-del="${i}" aria-label="Remover cliente" title="Remover">✕</button></td></tr>`).join('');
+  $('n').value=clients.length; calc();
+}
+
+function calc(){
+  const m=Math.max(1,Math.min(60,parseInt($('months').value)||1));
+  let sA=0,sI=0,sP=0,sT=0; const pays=[];
+  clients.forEach((c,i)=>{
+    const it=c.amount*c.rate/100, pay=c.amount/m+it;
+    sA+=c.amount; sI+=it; sP+=pay; sT+=pay*m; pays.push({c,i,it,pay,pr:c.amount/m});
+    count($('ri'+i),it); count($('rp'+i),pay); count($('rt'+i),pay*m);
+  });
+  const gross=sA+sI*m, prof=sI*m, roi=sA>0?prof/sA*100:0;
+  M={m,sA,sI,sP,sT,gross,prof,roi,pays};
+  count($('kLent'),sA); count($('kMonth'),sP); count($('kProfit'),sI); count($('kGross'),gross); count($('kTot'),prof);
+  $('kLentS').textContent=clients.length+(clients.length===1?' cliente':' clientes');
+  $('kGrossS').textContent='valor emprestado + juros de '+m+(m===1?' mês':' meses');
+  $('kRoi').textContent='retorno de '+roi.toFixed(1).replace('.',',')+'% sobre o emprestado';
+  $('fA').textContent=fmt(sA);$('fI').textContent=fmt(sI);$('fP').textContent=fmt(sP);$('fT').textContent=fmt(sT);
+  document.querySelectorAll('#chips .chip').forEach(b=>b.classList.toggle('on',+b.dataset.m===m));
+  const diff=(parseFloat($('capital').value)||0)-sA,a=$('alloc');
+  if(diff<-0.005){a.className='hint bad';a.textContent='Atenção: os valores passam a quantia investida em '+fmt(-diff)+'.';}
+  else{a.className='hint';a.textContent=diff>0.005?'Ainda por emprestar: '+fmt(diff):'Toda a quantia investida está distribuída.';}
+  drawDonut(); drawLine(); drawBars(); drawIns(); drawSched();
+  if(window.__onchange) window.__onchange();
+}
+
+function drawDonut(){
+  const {sA,prof,gross}=M, C=2*Math.PI*70, p=gross>0?sA/gross:0;
+  $('d1').setAttribute('stroke-dasharray',`${p*C} ${C}`);
+  $('d2').setAttribute('stroke-dasharray',`${(1-p)*C} ${C}`);
+  $('d2').setAttribute('stroke-dashoffset',-p*C);
+  $('d1').style.transition=$('d2').style.transition='stroke-dasharray .5s ease';
+  $('dMid').textContent=fmt(gross); $('l1').textContent=fmt(sA); $('l2').textContent=fmt(prof);
+}
+
+function drawLine(){
+  const {m,sP,sI,gross}=M, W=640,H=270,L=58,R=14,T=14,B=34, pw=W-L-R, ph=H-T-B, ymax=(gross||1)*1.08;
+  const X=k=>L+k/m*pw, Y=v=>T+(1-v/ymax)*ph;
+  let g='';
+  for(let i=0;i<=4;i++){const v=ymax*i/4,y=Y(v);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="#e2e8f0"/><text x="${L-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#64748b">${cmp(v)}</text>`;}
+  const step=Math.ceil(m/8);
+  for(let k=0;k<=m;k+=step){g+=`<text x="${X(k)}" y="${H-12}" text-anchor="middle" font-size="11" fill="#64748b">${k===0?'':'M'+k}</text>`;}
+  const pts=f=>Array.from({length:m+1},(_,k)=>X(k)+','+Y(f(k))).join(' ');
+  const area=`${X(0)},${Y(0)} ${pts(k=>sP*k)} ${X(m)},${Y(0)}`;
+  g+=`<defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2563eb" stop-opacity=".25"/><stop offset="1" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs>
+    <line x1="${L}" x2="${W-R}" y1="${Y(gross)}" y2="${Y(gross)}" stroke="#94a3b8" stroke-dasharray="5 4"/>
+    <polygon points="${area}" fill="url(#ga)"/>
+    <polyline points="${pts(k=>sP*k)}" fill="none" stroke="#2563eb" stroke-width="3" stroke-linejoin="round"/>
+    <polyline points="${pts(k=>sI*k)}" fill="none" stroke="#f59e0b" stroke-width="3" stroke-linejoin="round"/>
+    <line id="xh" y1="${T}" y2="${T+ph}" stroke="#0f2747" stroke-opacity=".35" style="display:none"/>
+    <circle id="c1" r="5" fill="#2563eb" stroke="#fff" stroke-width="2" style="display:none"/>
+    <circle id="c2" r="5" fill="#f59e0b" stroke="#fff" stroke-width="2" style="display:none"/>
+    <rect id="hit" x="${L}" y="${T}" width="${pw}" height="${ph}" fill="transparent"/>`;
+  $('line').innerHTML=g;
+  const show=k=>{
+    k=Math.max(0,Math.min(m,k));
+    $('xh').setAttribute('x1',X(k));$('xh').setAttribute('x2',X(k));
+    $('c1').setAttribute('cx',X(k));$('c1').setAttribute('cy',Y(sP*k));
+    $('c2').setAttribute('cx',X(k));$('c2').setAttribute('cy',Y(sI*k));
+    ['xh','c1','c2'].forEach(i=>$(i).style.display='');
+    $('read').innerHTML=k===0?'Início: ainda não recebeu nada.':`<b>Mês ${k}:</b> recebido <b>${fmt(sP*k)}</b> · juros <b style="color:#b45309">${fmt(sI*k)}</b> · falta receber <b>${fmt(gross-sP*k)}</b>`;
+  };
+  const hit=$('hit'), svg=$('line');
+  const move=e=>{const r=svg.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W;show(Math.round((x-L)/pw*m));};
+  hit.addEventListener('pointermove',move);hit.addEventListener('pointerdown',move);
+  show(m);
+}
+
+function drawBars(){
+  const {pays}=M, max=Math.max(...pays.map(p=>p.pay),1);
+  $('cbars').innerHTML=pays.map(p=>`<div class="cb" title="${esc(p.c.name)}: ${fmt(p.pay)}">
+    <div class="nm">${esc(p.c.name)}</div>
+    <div class="tr"><div style="width:${p.pr/max*100}%;background:#2563eb"></div><div style="width:${p.it/max*100}%;background:#f59e0b"></div></div>
+    <div class="v">${fmt(p.pay)}</div></div>`).join('');
+}
+
+function drawIns(){
+  const {m,sA,sP,prof,roi,pays}=M, n=pays.length;
+  const top=pays.reduce((a,b)=>b.pay>a.pay?b:a,pays[0]);
+  const be=sP>0?Math.min(m,Math.ceil(sA/sP-1e-9)):0;
+  const rows=[
+    ['Recupera o valor emprestado no mês',be?be+'':'-'],
+    ['Lucro médio por cliente',fmt(n?prof/n:0)],
+    ['Maior pagamento mensal',top?esc(top.c.name)+'<br>'+fmt(top.pay):'-'],
+    ['Retorno sobre o emprestado',roi.toFixed(1).replace('.',',')+'%'],
+    ['Taxa média ponderada',(sA>0?M.sI/sA*100:0).toFixed(1).replace('.',',')+'% ao mês']
+  ];
+  $('ins').innerHTML=rows.map(r=>`<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join('');
+}
+
+function drawSched(){
+  const {m,sA,sI,sP,gross}=M; let h='';
+  for(let k=1;k<=m;k++){
+    h+=`<tr><td>Mês ${k}</td><td class="n">${fmt(sP)}</td><td class="n">${fmt(sA/m*k)}</td><td class="n">${fmt(sI*k)}</td><td class="n">${fmt(sP*k)}</td><td class="n">${fmt(gross-sP*k)}</td></tr>`;
+  }
+  $('sched').innerHTML=h;
+}
+
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===b.dataset.tab));
+}));
+$('rows').addEventListener('input',e=>{
+  const t=e.target,i=+t.dataset.i,f=t.dataset.f; if(f===undefined) return;
+  if(f==='name') clients[i].name=t.value; else clients[i][f]=parseFloat(t.value)||0;
+  calc();
+});
+$('rows').addEventListener('click',e=>{const b=e.target.closest('[data-del]'); if(!b||clients.length<2) return; clients.splice(+b.dataset.del,1); render();});
+$('add').onclick=()=>{
+  const used=clients.reduce((s,c)=>s+c.amount,0), left=Math.max(0,(parseFloat($('capital').value)||0)-used);
+  clients.push({name:'Cliente '+(clients.length+1),amount:+left.toFixed(2),rate:parseFloat($('rate').value)||0}); render();
+};
+$('reset').onclick=()=>{const cap=parseFloat($('capital').value)||0;clients.forEach(c=>c.amount=+(cap/clients.length).toFixed(2));render();};
+['capital','n','rate'].forEach(id=>$(id).addEventListener('input',build));
+$('months').addEventListener('input',calc);
+$('mp').onclick=()=>{$('months').value=Math.min(60,(parseInt($('months').value)||0)+1);calc();};
+$('mm').onclick=()=>{$('months').value=Math.max(1,(parseInt($('months').value)||2)-1);calc();};
+$('chips').innerHTML=[1,3,6,12,24].map(m=>`<button class="chip" data-m="${m}">${m} ${m===1?'mês':'meses'}</button>`).join('');
+$('chips').addEventListener('click',e=>{const b=e.target.closest('[data-m]'); if(!b) return; $('months').value=b.dataset.m; calc();});
+$('csv').onclick=()=>{
+  const {m,sA,sI,sP,gross}=M, r=[['Mes','Pagamento','Valor recuperado','Juros recebidos','Total recebido','Falta receber']];
+  for(let k=1;k<=m;k++) r.push([k,sP*k/k,sA/m*k,sI*k,sP*k,gross-sP*k].map((v,i)=>i?v.toFixed(2):v));
+  const blob=new Blob(['\ufeff'+r.map(x=>x.join(';')).join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cronograma-heel-services.csv';a.click();
+};
+function getState(){return {capital:$('capital').value,rate:$('rate').value,months:$('months').value,clients:clients.map(c=>({name:c.name,amount:c.amount,rate:c.rate}))};}
+function setState(s){
+  if(!s||!Array.isArray(s.clients)||!s.clients.length) return;
+  $('capital').value=s.capital; $('rate').value=s.rate; $('months').value=s.months;
+  clients=s.clients.map(c=>({name:String(c.name),amount:+c.amount||0,rate:+c.rate||0})); render();
+}
+build();
+</script>
+
+<script type="module">
+/* ====== COLE AQUI A CONFIGURAÇÃO DO FIREBASE (veja o LEIA-ME) ====== */
+const firebaseConfig = {
+  apiKey: "AIzaSyBxxX_ExUlpIpkp5nEAtlwK4b7VlIrA9N8",
+  authDomain: "heel-services-3be95.firebaseapp.com",
+  projectId: "heel-services-3be95",
+  storageBucket: "heel-services-3be95.firebasestorage.app",
+  messagingSenderId: "68938436268",
+  appId: "1:68938436268:web:7faf87c2e1f53105661909",
+  measurementId: "G-PRKRXFGM0X"
+};
+/* =================================================================== */
+const $ = id => document.getElementById(id);
+const st = (t,c='') => { $('status').textContent=t; $('status').className='pill '+c; };
+let suppress = false, timer = null, save = async()=>{};
+
+const configured = !String(firebaseConfig.apiKey).startsWith('COLE');
+if (!configured) {
+  // Modo local (sem Firebase): guarda no próprio aparelho
+  $('localBanner').style.display='block';
+  try { const r=localStorage.getItem('heel-state'); if(r){ suppress=true; window.setState(JSON.parse(r)); suppress=false; } } catch(e){}
+  window.__onchange=()=>{ if(suppress) return; clearTimeout(timer); timer=setTimeout(()=>{ try{localStorage.setItem('heel-state',JSON.stringify(window.getState())); st('Guardado neste aparelho','ok');}catch(e){st('Não foi possível guardar','err');} },500); };
+  st('Modo local','wait');
+} else {
+  const V='10.14.1', B='https://www.gstatic.com/firebasejs/'+V+'/';
+  try {
+    const {initializeApp}=await import(B+'firebase-app.js');
+    const {getAuth,onAuthStateChanged,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut}=await import(B+'firebase-auth.js');
+    const {getFirestore,doc,getDoc,setDoc}=await import(B+'firebase-firestore.js');
+    const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+    let ref=null;
+    const msg=c=>({'auth/invalid-credential':'Email ou senha incorretos.','auth/invalid-email':'Email inválido.','auth/weak-password':'A senha precisa de pelo menos 6 caracteres.','auth/email-already-in-use':'Este email já tem conta. Use Entrar.','auth/missing-password':'Digite a senha.','auth/network-request-failed':'Sem internet.','auth/operation-not-allowed':'Criação de contas está desativada.','auth/too-many-requests':'Muitas tentativas. Aguarde um pouco.'}[c]||'Erro: '+c);
+    const go=async fn=>{ $('lerr').textContent=''; try{ await fn(auth,$('em').value.trim(),$('pw').value); }catch(e){ $('lerr').textContent=msg(e.code); } };
+    $('bin').onclick=()=>go(signInWithEmailAndPassword);
+    $('bnew').onclick=()=>go(createUserWithEmailAndPassword);
+    $('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('bin').click(); });
+    $('logout').onclick=()=>signOut(auth);
+    save=async()=>{ if(!ref) return; st('A guardar...','wait'); try{ await setDoc(ref,{...window.getState(),updated:new Date().toISOString()}); st('Guardado online ✓','ok'); }catch(e){ st('Erro ao guardar','err'); console.error(e); } };
+    window.__onchange=()=>{ if(suppress||!ref) return; clearTimeout(timer); st('A guardar...','wait'); timer=setTimeout(save,800); };
+    onAuthStateChanged(auth,async user=>{
+      if(!user){ ref=null; $('login').classList.add('on'); $('logout').style.display='none'; st('Sem sessão'); return; }
+      $('login').classList.remove('on'); $('logout').style.display='';
+      ref=doc(db,'users',user.uid,'state','main'); st('A carregar...','wait');
+      try{
+        const snap=await getDoc(ref);
+        if(snap.exists()){ suppress=true; window.setState(snap.data()); suppress=false; st('Dados carregados ✓','ok'); }
+        else { await save(); }
+      }catch(e){ suppress=false; st('Erro ao carregar','err'); console.error(e); }
+    });
+  } catch(e){ st('Firebase indisponível','err'); console.error(e); }
+}
+</script>
+</body>
+</html>
